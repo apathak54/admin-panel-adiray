@@ -15,7 +15,7 @@ export default function Blogpost() {
   
     // If token exists, make the API call with the token included in the headers
     if (token) {
-      axios.get(`https://node-js-jwt-auth.onrender.com/api/posts/${postId}`, {
+      axios.get(`https://node-js-jwt-auth.onrender.com/api/admin/posts/${postId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

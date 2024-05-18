@@ -86,7 +86,7 @@ const UpdateBlog = () => {
       }
   
       // Send formData to the API with the token included in the headers
-      await axios.put(`https://node-js-jwt-auth.onrender.com/api/posts/${postId}`, formData, {
+      await axios.put(`https://node-js-jwt-auth.onrender.com/api/admin/posts/${postId}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`
         }
