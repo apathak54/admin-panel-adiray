@@ -53,7 +53,7 @@ export default function CustomCard({ name, imageUrl, link, refresh }: Props) {
     async function handleDelete() {
         console.log("Deleting")
         try {
-            const response = await fetch(`http://localhost:8080/api/category/${link}`, {
+            const response = await fetch(`https://node-js-jwt-auth.onrender.com/api/category/${link}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
