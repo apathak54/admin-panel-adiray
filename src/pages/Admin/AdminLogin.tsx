@@ -14,7 +14,7 @@ export default function AdminLogin() {
     async function handleSubmit(e:any) {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8080/api/admin/login', {
+            const response = await fetch('https://node-js-jwt-auth.onrender.com/api/admin/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

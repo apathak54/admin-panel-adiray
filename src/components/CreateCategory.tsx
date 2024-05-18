@@ -48,7 +48,7 @@ export default function CreateCategory({ visible, setVisible, refresh }: CustomB
             formData.append('picture', file);
         }
 
-        const response = await fetch('http://localhost:8080/api/category/create', {
+        const response = await fetch('https://node-js-jwt-auth.onrender.com/api/category/create', {
             method: 'POST',
             headers: {
                 'authorization': `Bearer ${token}`

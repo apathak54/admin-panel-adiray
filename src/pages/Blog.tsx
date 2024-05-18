@@ -35,7 +35,7 @@ const DeletePost = async (post_id: string) => {
   }
 
   try {
-    const response = await axios.delete(`http://localhost:8080/api/posts/${post_id}`, {
+    const response = await axios.delete(`https://node-js-jwt-auth.onrender.com/api/posts/${post_id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -61,7 +61,7 @@ useEffect(() => {
   // If token exists, make the API call with the token included in the headers
   if (token) {
     axios
-      .get<BlogPost[]>('http://localhost:8080/api/posts/', {
+      .get<BlogPost[]>('https://node-js-jwt-auth.onrender.com/api/posts/', {
         headers: {
           Authorization: `Bearer ${token}`
         }

@@ -49,7 +49,7 @@ export default function AdminProduct(): JSX.Element {
             return;
         data.name = name;
         data.imageUrl = imageUrl;
-        let response = await fetch('http://localhost:8080/api/category/update', {
+        let response = await fetch('https://node-js-jwt-auth.onrender.com/api/category/update', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ export default function AdminProduct(): JSX.Element {
     }
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/category/product/${categoryId}`,
+        fetch(`https://node-js-jwt-auth.onrender.com/api/category/product/${categoryId}`,
             {
                 method: 'GET',
                 headers: {

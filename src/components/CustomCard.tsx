@@ -31,7 +31,7 @@ export default function CustomCard({ name, imageUrl, link, refresh }: Props) {
 
     async function updateCategory() {
         console.log('Updating category');
-        let response = await fetch('http://localhost:8080/api/category/update', {
+        let response = await fetch('https://node-js-jwt-auth.onrender.com/api/category/update', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

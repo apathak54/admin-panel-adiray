@@ -20,7 +20,7 @@ export default function CreateProduct({ visible, setVisible, refresh, categoryId
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const response = await fetch('http://localhost:8080/api/category/product/create', {
+        const response = await fetch('https://node-js-jwt-auth.onrender.com/api/category/product/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

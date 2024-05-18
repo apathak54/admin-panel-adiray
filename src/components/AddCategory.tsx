@@ -59,7 +59,7 @@ export default function AddCategory({ refresh, token, setVisible }: AddCategoryP
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const response = await fetch('http://localhost:8080/api/category/create', {
+        const response = await fetch('https://node-js-jwt-auth.onrender.com/api/category/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

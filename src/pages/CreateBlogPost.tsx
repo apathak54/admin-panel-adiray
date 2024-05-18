@@ -56,7 +56,7 @@ const CreateBlog = () => {
       }
   
       // Send formData to the API with the token included in the headers
-      await axios.post('http://localhost:8080/api/posts/', formData, {
+      await axios.post('https://node-js-jwt-auth.onrender.com/api/posts/', formData, {
         headers: {
           Authorization: `Bearer ${token}`
         }

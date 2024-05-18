@@ -54,7 +54,7 @@ export default function EditCategory({ data, categoryId, refresh, token, setVisi
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const response = await fetch(`http://localhost:8080/api/category/update`, {
+        const response = await fetch(`https://node-js-jwt-auth.onrender.com/api/category/update`, {
             method: 'POST', // Assuming POST for update, it might be PUT/PATCH based on API
             headers: {
                 'Content-Type': 'application/json',

@@ -42,7 +42,7 @@ const UpdateBlog = () => {
     }
   
     // Fetch post details with the token included in the headers
-    axios.get(`http://localhost:8080/api/posts/${postId}`, {
+    axios.get(`https://node-js-jwt-auth.onrender.com/api/posts/${postId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -86,7 +86,7 @@ const UpdateBlog = () => {
       }
   
       // Send formData to the API with the token included in the headers
-      await axios.put(`http://localhost:8080/api/posts/${postId}`, formData, {
+      await axios.put(`https://node-js-jwt-auth.onrender.com/api/posts/${postId}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`
         }

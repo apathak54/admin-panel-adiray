@@ -24,7 +24,7 @@ export default function Category() {
 
     async function getData() {
         console.log("Fetching");
-        const response = await fetch(`http://localhost:8080/api/category`, {
+        const response = await fetch(`https://node-js-jwt-auth.onrender.com/api/category`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

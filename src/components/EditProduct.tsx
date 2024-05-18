@@ -30,7 +30,7 @@ export default function EditProduct({ visible, setVisible, refresh, product }: E
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const response = await fetch('http://localhost:8080/api/category/product/update', {
+        const response = await fetch('https://node-js-jwt-auth.onrender.com/api/category/product/update', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
