@@ -91,7 +91,7 @@ export default function AddCategory({ refresh, token, setVisible }: AddCategoryP
                             value={formData.name}
                             onChange={handleNameChange}
                         />
-                        {formData.imageUrl.map((value , index) => (
+                        {formData.imageUrl.map((_, index) => (
                             <div key={index} className="relative w-full">
                                 <input
                                     className="focus:bg-white my-2 w-full px-6 py-5 rounded-full mb-4 bg-gray-100"

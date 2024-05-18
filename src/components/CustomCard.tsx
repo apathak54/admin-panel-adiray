@@ -71,6 +71,7 @@ export default function CustomCard({ name, imageUrl, link, refresh }: Props) {
         }
         catch (err) {
             console.log(err);
+            {visible ? ''  : ''}
         }
     }
 
@@ -133,27 +134,3 @@ export default function CustomCard({ name, imageUrl, link, refresh }: Props) {
 }
 
 
-// interface CustomCardProps {
-//     data: {
-//         name: string;
-//         imageUrl: string;
-//     }
-// }
-
-// export default function CustomCard({ data }: CustomCardProps) {
-//     const cardStyle = {
-//         maxWidth: '450px',
-//     }
-//     return (
-//         <>
-//             {/* <div className="flex justify-center items-center px-5 py-3 bg-blue-500 mx-2 my-3 card">
-//                 {data.name}
-//             </div> */}
-//             <div className=" mx-2 p-3 max-w-md">
-//                 <div className=" bg-black overflow-hidden">
-//                     <img src={data.imageUrl} alt={data.name} className="w-full" />
-//                 </div>
-//             </div>
-//         </>
-//     )
-// }

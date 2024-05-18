@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import CustomCard from "../../components/CustomCard";
-import CustomButton from "../../components/CustomButton/CustomButton";
 import { useParams } from "react-router-dom";
 import CreateProduct from "../../components/CreateProduct";
 import EditProduct from "../../components/EditProduct";
@@ -27,7 +25,6 @@ export default function AdminProduct(): JSX.Element {
     const [imageUrl, setImageUrl] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
     const [edit, setEdit] = useState(false);
-    const [productEdit, setProductEdit] = useState(false);
     const { categoryId } = useParams();
     const token = localStorage.getItem('adminToken');
     if (!token) {
