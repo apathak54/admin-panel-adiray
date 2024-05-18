@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import editImage from '../assets/edit.png'
 import EditCategory from "./EditCategory";
 
 interface Props {
