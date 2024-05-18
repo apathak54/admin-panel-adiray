@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import CustomButton from "./CustomButton/CustomButton";
 
 interface CustomButtonProps {
@@ -13,7 +13,6 @@ interface MyFile extends File {
 
 export default function CreateCategory({ visible, setVisible, refresh }: CustomButtonProps) {
     const [name, setName] = useState('');
-    const [imageUrl, setImageUrl] = useState('');
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -35,62 +34,84 @@ export default function CreateCategory({ visible, setVisible, refresh }: CustomB
             setFile(selectedFile as MyFile);
         }
     };
+
     const token = localStorage.getItem('adminToken');
     if (!token) {
         window.location.href = '/admin/login';
     }
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const formData = new FormData();
+        formData.append('name', name);
+        if (file) {
+            formData.append('picture', file);
+        }
+
         const response = await fetch('http://localhost:8080/api/category/create', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'authorization': 'Bearer ' + token
+                'authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({
-                name: name,
-                imageUrl: [file?.name],
-                picture: file
-            })
+            body: formData
         });
+
         const data = await response.json();
         if (data.success) {
             setVisible(false);
             setName('');
-            setImageUrl('');
+            setFile(null);
             refresh();
-            console.log(data);
-        }
-        else {
+        } else {
             setErrorMessage(data.error);
             setError(true);
         }
-    }
+    };
 
     return (
         <>
-            {
-                visible &&
+            {visible && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
                     <div className="bg-white rounded-lg p-8">
                         <div className="mx-auto max-w-96 text-center w-96">
                             <form onSubmit={handleSubmit}>
-                                <input className="focus:bg-white my-2 w-full px-6 py-5 rounded-full mb-4 bg-gray-100" type="text" placeholder="Category Name" value={name} onChange={(e) => setName(e.target.value)} />
-                                <input className="focus:bg-white my-2 w-full px-6 py-5 rounded-full mb-4 bg-gray-100" type="text" placeholder="Image Url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
-
-                                <div className={` ${error ? '' : 'hidden'} mb-4 ml-1 mt-1 text-red-600`}>
-                                    <span className="text-white bg-red-600 rounded-full px-2">!</span> {errorMessage}
+                                <input
+                                    className="focus:bg-white my-2 w-full px-6 py-5 rounded-full mb-4 bg-gray-100"
+                                    type="text"
+                                    placeholder="Category Name"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+                                <div
+                                    onDrop={handleDrop}
+                                    onDragOver={handleDragOver}
+                                    className="focus:bg-white my-2 w-full px-6 py-5 rounded-full mb-4 bg-gray-100 text-gray-500 text-center border-dashed border-2 border-gray-300"
+                                >
+                                    {file ? file.name : "Drag and drop a file or click to select a file"}
+                                    <input
+                                        type="file"
+                                        className="hidden"
+                                        onChange={handleFileInputChange}
+                                    />
                                 </div>
+                                {error && (
+                                    <div className="mb-4 ml-1 mt-1 text-red-600">
+                                        <span className="text-white bg-red-600 rounded-full px-2">!</span> {errorMessage}
+                                    </div>
+                                )}
                                 <div className="flex justify-between">
-                                    <CustomButton type="button" varient="secondary" onClick={() => setVisible(false)}>Cancel</CustomButton>
-                                    <CustomButton type="submit" varient="primary">Create</CustomButton>
+                                    <CustomButton type="button" varient="secondary" onClick={() => setVisible(false)}>
+                                        Cancel
+                                    </CustomButton>
+                                    <CustomButton type="submit" varient="primary">
+                                        Create
+                                    </CustomButton>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-            }
+            )}
         </>
-    )
+    );
 }
