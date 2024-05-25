@@ -131,7 +131,7 @@ useEffect(() => {
             <div key={post._id} className="flex flex-col md:flex-row gap-6">
               <div className="flex-shrink-0  md:w-1/3">
                 <Link to={`/admin/blogposts/${post._id}`}>
-                  <img src={post.imageUrl } alt={post.title} className="rounded-lg object-cover w-full " />
+                  <img src={post.imageUrl } alt={post.title} className="rounded-lg object-cover w-full h-[200px] " />
                 </Link>
               </div>
               <div className="flex flex-col flex-grow">
