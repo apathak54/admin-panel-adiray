@@ -61,7 +61,7 @@ useEffect(() => {
   // If token exists, make the API call with the token included in the headers
   if (token) {
     axios
-      .get<BlogPost[]>('http://localhost:8080/api/posts', {
+      .get<BlogPost[]>('https://node-js-jwt-auth.onrender.com/api/admin/posts/', {
         headers: {
           Authorization: `Bearer ${token}`
         }

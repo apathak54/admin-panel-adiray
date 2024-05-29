@@ -19,7 +19,7 @@ export default function Blogpost() {
         return;
       }
 
-      const response = await axios.get(`http://localhost:8080/api/posts/${postId}`, {
+      const response = await axios.get(`https://node-js-jwt-auth.onrender.com/api/admin/posts/${postId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

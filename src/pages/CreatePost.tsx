@@ -1,5 +1,6 @@
 import JoditEditor from 'jodit-react';
 import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const CreatePost = () => {
     const editor = useRef(null);
@@ -10,7 +11,7 @@ const CreatePost = () => {
     const [author, setAuthor] = useState('');
     const [authorImg, setAuthorImg] = useState('');
     const [authorOccupation, setAuthorOccupation] = useState('');
-
+    const navigate = useNavigate()
     const config = {
         uploader: {
           insertImageAsBase64URI: true
@@ -49,7 +50,7 @@ const CreatePost = () => {
           return;
         }
         try {
-            const response = await fetch('http://localhost:8080/api/admin/posts', {
+            const response = await fetch('https://node-js-jwt-auth.onrender.com/api/admin/posts/', {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${token}` ,
@@ -64,6 +65,7 @@ const CreatePost = () => {
 
             const result = await response.json();
             alert('Post saved successfully')
+            navigate('/admin/blog');
             console.log('Post saved successfully:', result);
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
