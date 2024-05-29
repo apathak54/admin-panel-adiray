@@ -17,7 +17,7 @@ interface Post {
 }
 
 export default function Blogpost(): JSX.Element {
-  const { postId }: { postId: string } = useParams();
+  const { postId } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
