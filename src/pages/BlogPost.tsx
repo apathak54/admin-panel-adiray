@@ -2,12 +2,14 @@ import { FaArrowLeft } from 'react-icons/fa';
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
+import DOMPurify from 'dompurify';
 
 export default function Blogpost() {
   const { postId } = useParams();
   const navigate = useNavigate();
-  const [post, setPost] = useState<any>(null);
+  const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+
   const fetchBlogPost = async () => {
     try {
       const token = localStorage.getItem('adminToken'); // Check if 'adminToken' is the correct key
@@ -17,7 +19,7 @@ export default function Blogpost() {
         return;
       }
 
-      const response = await axios.get(`https://node-js-jwt-auth.onrender.com/api/admin/posts/${postId}`, {
+      const response = await axios.get(`http://localhost:8080/api/posts/${postId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -34,7 +36,7 @@ export default function Blogpost() {
     fetchBlogPost();
   }, [postId]);
 
-  const generateAnchorText = (url: string) => {
+  const generateAnchorText = (url) => {
     const urlObj = new URL(url);
     const domain = urlObj.hostname.replace('www.', '');
 
@@ -52,12 +54,17 @@ export default function Blogpost() {
     }
   };
 
-  const processTextWithLinks = (text: string) => {
+  const processTextWithLinks = (text) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     return text.replace(urlRegex, (url) => {
       const anchorText = generateAnchorText(url);
       return `<a href="${url}" class="text-blue-500 hover:underline hover:visited" target="_blank" rel="noopener noreferrer">${anchorText}</a>`;
     });
+  };
+
+  const sanitizeHtmlContent = (htmlContent) => {
+    const cleanHtmlContent = DOMPurify.sanitize(htmlContent);
+    return processTextWithLinks(cleanHtmlContent);
   };
 
   if (loading) {
@@ -81,7 +88,7 @@ export default function Blogpost() {
             <div className="flex justify-start gap-4">
               <img className="w-12 h-12 rounded-full" src={post.authorImg} alt="Author" />
               <div>
-                <h3 className="text-md font font-bold">{post.author}</h3>
+                <h3 className="text-md font-bold">{post.author}</h3>
                 {post.authorOccupation && <h5 className="text-sm font-MontBook text-gray-700">{post.authorOccupation}</h5>}
               </div>
             </div>
@@ -94,14 +101,9 @@ export default function Blogpost() {
             {post.imageUrl && <img className="w-[752px] rounded-3xl" src={post.imageUrl} alt="Blog" />}
 
             <div className="text-gray-900">
-              <div className="text-gray-850 text-xl font-semibold font-Mont leading-[35px]" dangerouslySetInnerHTML={{ __html: processTextWithLinks(post.description) }}></div>
+              <div className="text-gray-850 text-xl font-semibold font-Mont leading-[35px]" dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(post.description) }}></div>
               <br />
-              {post.details && post.details.map((detail: any) => (
-                <div key={detail._id} className="detail border-b border-gray-300 pb-4 mb-4">
-                  <h2 className="text-gray-900 text-xl font-semibold">{detail.point}</h2>
-                  <p className="text-gray-700 leading-7" dangerouslySetInnerHTML={{ __html: processTextWithLinks(detail.description) }}></p>
-                </div>
-              ))}
+              <div className="text-gray-800 text-lg font-Mont leading-[28px]" dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(post.content) }}></div>
             </div>
           </div>
         </div>

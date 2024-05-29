@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar"
 import AdminLogin from "./pages/Admin/AdminLogin"
 import AdminProduct from "./pages/Admin/AdminProduct"
 import Category from "./pages/Category"
+import CreatePost from "./pages/CreatePost"
 
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
     <Routes>
       <Route path="/admin/category/:categoryId" element={<AdminProduct/>} />
       <Route path="/admin/category/" element={<Category/>} />
-      
+      <Route path="/admin/create/post" element={<CreatePost/>} />
       <Route path="/" element={<AdminLogin/>} />
       <Route path="/admin/blog/" element={<Blog/>} />
       <Route path="/admin/posts/" element={<CreateBlog/>} />
