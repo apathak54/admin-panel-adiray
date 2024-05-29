@@ -123,7 +123,7 @@ useEffect(() => {
               </svg>
             </div>
             {/* Add Create Blog Button */}
-            <Link to="/admin/posts/" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Create Blog</Link>
+            <Link to="/admin/create/post" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Create Blog</Link>
           </div>
         </div>
         <div className="flex flex-col gap-6">
