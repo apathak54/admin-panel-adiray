@@ -12,27 +12,7 @@ const CreatePost = () => {
     const [authorImg, setAuthorImg] = useState('');
     const [authorOccupation, setAuthorOccupation] = useState('');
     const navigate = useNavigate()
-    const config = {
-        uploader: {
-          insertImageAsBase64URI: true
-        },
-        buttons: [
-          'bold',
-          'italic',
-          'underline',
-          'link',
-          'unlink',
-          'source',
-          'image'
-        ],
-        events: {
-          afterInit: function (editor:any) {
-            editor.events.on('change', (newContent:any) => {
-              setContent(newContent);
-            });
-          }
-        }
-      };
+   
 
     const savePost = async () => {
         const postData = {
@@ -155,8 +135,9 @@ const CreatePost = () => {
                     <JoditEditor
           ref={editor}
           value={content}
-          config={config}
+          onChange={newContent => setContent(newContent)}
         />
+        
                 </div>
                 <button
                     onClick={savePost}

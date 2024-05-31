@@ -1,172 +1,188 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import JoditEditor from 'jodit-react';
+import { useRef, useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { FaArrowLeft } from 'react-icons/fa6';
 
-interface Detail {
-  point: string;
-  description: string;
-}
+const UpdatePost = () => {
+    const { postId } = useParams<{ postId: string }>();
+    const editor = useRef(null);
+    const [content, setContent] = useState('');
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
+    const [author, setAuthor] = useState('');
+    const [authorImg, setAuthorImg] = useState('');
+    const [authorOccupation, setAuthorOccupation] = useState('');
+    const navigate = useNavigate();
 
-interface FormData {
-  author: string;
-  authorImg: string;
-  authorOccupation: string;
-  title: string;
-  description: string;
-  details: Detail[];
-  imageUrl: string;
-}
 
-const UpdateBlog = () => {
-  const { postId } = useParams<{ postId: string }>();
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState<FormData>({
-    author: '',
-    authorImg: '',
-    authorOccupation: '',
-    title: '',
-    description: '',
-    details: [],
-    imageUrl: ''
-  });
 
-  useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    
-  
-    // If token doesn't exist, redirect the user to the login page
-    if (!token) {
-      navigate('/');
-      return;
-    }
-  
-    // Fetch post details with the token included in the headers
-    axios.get(`https://node-js-jwt-auth.onrender.com/api/posts/${postId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    .then(response => {
-      setFormData(response.data);
-      console.log(response.data);
-    })
-    .catch(error => {
-      console.error('Error fetching post details:', error);
-    });
-  }, [postId]);
+    useEffect(() => {
+        const fetchPost = async () => {
+            const token = localStorage.getItem('adminToken');
+            if (!token) {
+                console.error("No token found");
+                return;
+            }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index?: number) => {
-    const { name, value } = e.target;
-    if (index !== undefined) {
-      const updatedDetails:any = [...formData.details];
-      updatedDetails[index][name] = value;
-      setFormData(prevData => ({
-        ...prevData,
-        details: updatedDetails
-      }));
-    } else {
-      setFormData(prevData => ({
-        ...prevData,
-        [name]: value
-      }));
-    }
-  };
+            try {
+                const response = await axios.get(`https://node-js-jwt-auth.onrender.com/api/admin/posts/${postId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  
-    try {
-      const token = localStorage.getItem('adminToken');
-      if (!token) {
-        // Handle the case where the user is not authenticated (token not found)
-        console.error('User not authenticated');
-        // Optionally, you can redirect the user to the login page or display an error message
-        return;
-      }
-  
-      // Send formData to the API with the token included in the headers
-      await axios.put(`https://node-js-jwt-auth.onrender.com/api/admin/posts/${postId}`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`
+                const post = response.data;
+                setAuthor(post.author);
+                setAuthorImg(post.authorImg);
+                setAuthorOccupation(post.authorOccupation);
+                setTitle(post.title);
+                setDescription(post.description);
+                setImageUrl(post.imageUrl);
+                setContent(post.content);
+            } catch (error) {
+                console.error("Error fetching post:", error);
+            }
+        };
+
+        fetchPost();
+    }, [postId]);
+
+    const updatePost = async () => {
+        const postData = {
+            author,
+            authorImg,
+            authorOccupation,
+            title,
+            description,
+            imageUrl,
+            content,
+        };
+
+        const token = localStorage.getItem('adminToken');
+        if (!token) {
+            console.error("No token found");
+            return;
         }
-      });
-  
-      // Handle success and redirect the user
-      console.log('Blog post updated successfully!');
-      alert('Post Updated Successfully');
-      navigate('/admin/blog');
-    } catch (error) {
-      // Handle errors, such as displaying an error message to the user
-      console.error('Error updating blog post:', error);
-    }
-  };
 
-  const handleAddDetail = () => {
-    setFormData(prevData => ({
-      ...prevData,
-      details: [...prevData.details, { point: '', description: '' }]
-    }));
-  };
+        try {
+            const response = await fetch(`https://node-js-jwt-auth.onrender.com/api/admin/posts/${postId}`, {
+                method: 'PUT',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(postData),
+            });
 
-  const handleRemoveDetail = (index: number) => {
-    const updatedDetails = formData.details.filter((_, i) => i !== index);
-    setFormData(prevData => ({
-      ...prevData,
-      details: updatedDetails
-    }));
-  };
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
 
-  return (
-    <div >
+            const result = await response.json();
+            alert('Post updated successfully');
+            navigate('/admin/blog');
+            console.log('Post updated successfully:', result);
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        }
+    };
 
-    
-      <div className="text-pink-600 text-[13px] m-4 font-semibold flex gap-1 items-center ">
-            <FaArrowLeft />
-            {/* Use Link component for consistent routing */}
-            <Link to="/admin/blog/" className="decoration-none text-pink-600 hover:text-pink-600">All Blogs</Link>
-          </div>
-    <div className="mx-auto md:max-w-xl mx-auto shadow-lg  m-8 mt-8 p-8">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex flex-col">
-          <label className="text-gray-800 font-bold">Author</label>
-          <input type="text" name="author" value={formData.author} onChange={handleChange} className="border border-gray-400 px-3 py-2 rounded-md focus:outline-none focus:border-black" />
+    return (
+        <div className="flex justify-center items-center min-h-screen mt-4 ">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl">
+                <h1 className="text-2xl font-bold mb-4">Update Post</h1>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="author">
+                        Author
+                    </label>
+                    <input
+                        type="text"
+                        id="author"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={author}
+                        onChange={(e) => setAuthor(e.target.value)}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="authorImg">
+                        Author Image URL
+                    </label>
+                    <input
+                        type="text"
+                        id="authorImg"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={authorImg}
+                        onChange={(e) => setAuthorImg(e.target.value)}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="authorOccupation">
+                        Author Occupation
+                    </label>
+                    <input
+                        type="text"
+                        id="authorOccupation"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={authorOccupation}
+                        onChange={(e) => setAuthorOccupation(e.target.value)}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
+                        Title
+                    </label>
+                    <input
+                        type="text"
+                        id="title"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
+                        Description
+                    </label>
+                    <input
+                        type="text"
+                        id="description"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="imageUrl">
+                        Image URL
+                    </label>
+                    <input
+                        type="text"
+                        id="imageUrl"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={imageUrl}
+                        onChange={(e) => setImageUrl(e.target.value)}
+                    />
+                </div>
+                <div className="mb-6">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                        Content
+                    </label>
+                    <JoditEditor
+                        ref={editor}
+                        value={content}
+                        onChange={newContent => setContent(newContent)}
+                    />
+                </div>
+                <button
+                    onClick={updatePost}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    Update Post
+                </button>
+            </div>
         </div>
-        <div className="flex flex-col">
-          <label className="text-gray-800 font-bold">Author Image URL</label>
-          <input type="text" name="authorImg" value={formData.authorImg} onChange={handleChange} className="border border-gray-400 px-3 py-2 rounded-md focus:outline-none focus:border-black" />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-gray-800 font-bold">Author Occupation</label>
-          <input type="text" name="authorOccupation" value={formData.authorOccupation} onChange={handleChange} className="border border-gray-400 px-3 py-2 rounded-md focus:outline-none focus:border-black" />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-gray-800 font-bold">Title</label>
-          <input type="text" name="title" value={formData.title} onChange={handleChange} className="border border-gray-400 px-3 py-2 rounded-md focus:outline-none focus:border-black" />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-gray-800 font-bold">Description</label>
-          <textarea name="description" value={formData.description} onChange={handleChange} className="border w- border-gray-400 px-3 py-2 rounded-md focus:outline-none focus:border-black resize-y min-h-48" />
-        </div>
-        {formData.details.map((detail, index) => (
-          <div key={index} className="flex flex-col">
-            <label className="text-gray-800 font-bold">Detail Point</label>
-            <input type="text" name="point" value={detail.point} onChange={(e) => handleChange(e, index)} className="border border-gray-400 px-3 py-2 rounded-md focus:outline-none focus:border-black resize-y" />
-            <label className="text-gray-800 font-bold">Detail Description</label>
-            <textarea name="description" value={detail.description} onChange={(e) => handleChange(e, index)} className="border border-gray-400 px-3 py-2 rounded-md focus:outline-none focus:border-black resize-y h-48" />
-            <button type="button" onClick={() => handleRemoveDetail(index)} className="text-gray-700 mt-2 bg-red-500 px-4 py-2 rounded-md hover:bg-red-700">Remove Detail</button>
-          </div>
-        ))}
-        <button type="button" onClick={handleAddDetail} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">Add Detail</button>
-        <div className="flex flex-col">
-          <label className="text-gray-800 font-bold">Image URL</label>
-          <input type="text" name="imageUrl" value={formData.imageUrl} onChange={handleChange} className="border border-gray-400 px-3 py-2 rounded-md focus:outline-none focus:border-black" />
-        </div>
-        <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700 w-full">Update</button>
-      </form>
-    </div>
-    </div>
-  );
+    );
 };
 
-export default UpdateBlog;
+export default UpdatePost;
