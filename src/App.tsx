@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import CreateBlog from "./pages/CreateBlogPost"
 import UpdateBlog from "./pages/UpdateBlogPost"
 import Blog from "./pages/Blog"
 import Blogpost from "./pages/BlogPost"
@@ -24,7 +23,6 @@ function App() {
       <Route path="/admin/create/post" element={<CreatePost/>} />
       <Route path="/" element={<AdminLogin/>} />
       <Route path="/admin/blog/" element={<Blog/>} />
-      <Route path="/admin/posts/" element={<CreateBlog/>} />
       <Route path="/admin/posts/:postId" element={<UpdateBlog />} />
       <Route path="/admin/blogposts/:postId" element={<Blogpost />} />
     </Routes>
