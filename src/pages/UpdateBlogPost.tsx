@@ -1,6 +1,7 @@
 import JoditEditor from 'jodit-react';
 import { useRef, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { FaArrowLeft } from 'react-icons/fa6';
 import axios from 'axios';
 
 const UpdatePost = () => {
@@ -89,9 +90,13 @@ const UpdatePost = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen mt-4 ">
+        <div className="flex justify-center items-center min-h-screen p-4 ">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl">
-                <h1 className="text-2xl font-bold mb-4">Update Post</h1>
+            <div className="flex items-center gap-2 mb-4 text-pink-600 text-[13px] font-semibold cursor-pointer" onClick={() => navigate('/admin/blog')}>
+                    <FaArrowLeft />
+                    <span className="hover:text-pink-800">All Blogs</span>
+                </div>
+                <h1 className="text-2xl font-bold mb-4 text-center">UPDATE YOUR BLOG</h1>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="author">
                         Author

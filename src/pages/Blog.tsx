@@ -9,6 +9,7 @@ type BlogPost = {
   title: string;
   description: string;
   imageUrl?: string;
+  createdAt : string ;
 };
 
 const inputClasses = 'pl-10 pr-4 py-3 shadow-md text-md rounded-lg w-full sm:w-auto';
@@ -92,7 +93,7 @@ const Blog: React.FC = () => {
   });
 
   return (
-    <div className="relative w-full flex justify-center shadow-md">
+    <div className="relative w-full flex justify-center  ">
       <div className="p-8 px-[5vw] z-[5] max-w-[1300px] flex flex-col justify-center">
         <div className="mb-6 flex flex-col md:flex-row justify-between sm:gap-8 items-center">
           <h1 data-aos={shouldAnimate ? 'slide-right' : ''} className="text-[clamp(35px,3.5vw,5rem)] font-Mont font-bold mb-4 md:mb-0">
@@ -112,6 +113,7 @@ const Blog: React.FC = () => {
               </svg>
             </div>
             <Link to="/admin/create/post" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 mt-2 sm:mt-0 w-full sm:w-auto text-center">Create Blog</Link>
+            <hr className={hrClasses} />
           </div>
         </div>
         {filteredPosts.length > 0 ? (
