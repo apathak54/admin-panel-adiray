@@ -168,7 +168,7 @@ export default function AdminProduct(): JSX.Element {
 
                     <div className="flex justify-center min-h-[600px]">
 
-                        <div className="max-w-[1000px] bg-gray-200 py-4 rounded-lg">
+                        <div className="w-[1000px] bg-gray-200 py-4 rounded-lg">
                             <div className="w-full mb-3">
                                 <input type="text" placeholder="Search" className="w-full py-2 px-4 rounded-lg"
                                     value={query} onChange={(e) => setQuery(e.target.value)}
