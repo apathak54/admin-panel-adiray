@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import CustomCard from "../../components/CustomCard";
-import CustomButton from "../../components/CustomButton/CustomButton";
 import { useParams } from "react-router-dom";
 import CreateProduct from "../../components/CreateProduct";
 import EditProduct from "../../components/EditProduct";
@@ -23,7 +21,6 @@ interface Category {
 
 export default function AdminProduct(): JSX.Element {
 
-    const inputClasses = "pl-10 pr-4 w-[100%] py-3 shadow-md text-md  rounded-lg";
     const isSmallScreen = useMediaQuery({ query: '(max-width: 700px)' });
 
     const [data, setData] = useState<Category | undefined>();
@@ -31,7 +28,6 @@ export default function AdminProduct(): JSX.Element {
     const [imageUrl, setImageUrl] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
     const [edit, setEdit] = useState(false);
-    const [productEdit, setProductEdit] = useState(false);
     const { categoryId } = useParams();
     const token = localStorage.getItem('adminToken');
     const [query, setQuery] = useState('');
