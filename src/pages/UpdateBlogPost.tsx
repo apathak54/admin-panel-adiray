@@ -61,10 +61,8 @@ const UpdatePost = () => {
         };
 
         const token = localStorage.getItem('adminToken');
-        if (!token) {
-            console.error("No token found");
-            return;
-        }
+        if (!token)
+            window.location.href = '/';
 
         try {
             const response = await fetch(`https://node-js-jwt-auth.onrender.com/api/admin/posts/${postId}`, {

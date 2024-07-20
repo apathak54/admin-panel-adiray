@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios, { AxiosResponse } from 'axios';
 import AOS from 'aos';
-import { useNavigate } from 'react-router-dom';
+
 
 type BlogPost = {
   _id: string;
@@ -24,14 +24,12 @@ const Blog: React.FC = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const navigate = useNavigate();
+ 
 
   const DeletePost = async (post_id: string) => {
     const token = localStorage.getItem('adminToken');
-    if (!token) {
-      navigate('/'); // Redirect to login if not authenticated
-      return;
-    }
+    if (!token)
+        window.location.href = '/';
 
     try {
       const response = await axios.delete(`https://node-js-jwt-auth.onrender.com/api/admin/posts/${post_id}`, {

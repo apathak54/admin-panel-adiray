@@ -25,11 +25,9 @@ export default function Blogpost(): JSX.Element {
   const fetchBlogPost = async () => {
     try {
       const token: string | null = localStorage.getItem('adminToken');
-      if (!token) {
-        console.error("No token found");
-        setLoading(false);
-        return;
-      }
+     
+      if (!token)
+          window.location.href = '/';
 
       const response = await axios.get<Post>(`https://node-js-jwt-auth.onrender.com/api/admin/posts/${postId}`, {
         headers: {

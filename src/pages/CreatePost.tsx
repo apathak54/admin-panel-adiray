@@ -32,11 +32,9 @@ const CreatePost = () => {
             content,
         };
 
-        const token = localStorage.getItem('adminToken'); // Check if 'adminToken' is the correct key
-        if (!token) {
-            console.error("No token found");
-            return;
-        }
+        const token = localStorage.getItem('adminToken');
+        if (!token)
+        window.location.href = '/';
         
         try {
             const response = await fetch('https://node-js-jwt-auth.onrender.com/api/admin/posts/', {
